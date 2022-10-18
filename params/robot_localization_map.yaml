@@ -20,7 +20,7 @@ odom0_config: [false, false, false,
                
 odom0_differential: true
 
-imu0: /imu/data
+imu0: /imu/data_raw
 imu0_config: [false, false, false,
               false, false, true,
               false, false, false,

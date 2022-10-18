@@ -18,7 +18,7 @@
   <node pkg="rosbag" type="play" name="Marvelmind" output="screen" args="--clock $(find ros_marvelmind_nav)/bagfiles/hedge_marvelmind.bag"/>
 
 <!-- Message adapter for robot_localization -->
-  <node pkg="ros_marvelmind_nav" type="hedge_msg_adapter" name="hedge_msg_adapter">
+  <node pkg="ros_marvelmind_nav" type="msg_adapter_node" name="hedge_msg_adapter">
     <rosparam file="$(find ros_marvelmind_nav)/params/cov.yaml" command="load"/>
   </node>
 
