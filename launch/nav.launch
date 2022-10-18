@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<launch>
+<!-- Map -->
+  <node pkg="map_server" type="map_server" name="map_server" args="$(find ros_marvelmind_nav)/maps/map_full_labandhall.yaml"/>
+
+<!-- Robot TF -->
+  <arg name="robot_model" default="$(find ros_marvelmind_nav)/urdf/robot.xacro"/>
+  <param name="robot_description" command="$(find xacro)/xacro $(arg robot_model)"/>
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher"/>
+  <node pkg="joint_state_publisher" type="joint_state_publisher" name="joint_state_publisher" />
+
+<!-- Marvelmind beacon TF -->
+  <node pkg="tf" type="static_transform_publisher" name="beacon_imu_broadcaster" args="0 0 0 0 0 0 base_link beacon_imu_link 100" />
+  <node pkg="tf" type="static_transform_publisher" name="beacon_map_broadcaster" args="0 0 0 0 0 0 beacon_map map 100" />
+
+<!-- Playing navigation & marvelmind bag files -->
+  <node pkg="rosbag" type="play" name="Navigation" output="screen" args="--clock $(find ros_marvelmind_nav)/bagfiles/nav_sequence.bag"/>
+  <node pkg="rosbag" type="play" name="Marvelmind" output="screen" args="--clock $(find ros_marvelmind_nav)/bagfiles/hedge_marvelmind.bag"/>
+
+<!-- Message adapter for robot_localization -->
+  <node pkg="ros_marvelmind_nav" type="hedge_msg_adapter" name="hedge_msg_adapter">
+    <rosparam file="$(find ros_marvelmind_nav)/params/cov.yaml" command="load"/>
+  </node>
+
+<!-- EKF localization -->
+  <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization_map">
+    <rosparam file="$(find ros_marvelmind_nav)/params/robot_localization_map.yaml" command="load"/>
+    <remap from="odometry/filtered" to="odometry/map"/>
+  </node>
+  <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization_odom">
+    <rosparam file="$(find ros_marvelmind_nav)/params/robot_localization_odom.yaml" command="load"/>
+    <remap from="odometry/filtered" to="odometry/imu"/>
+  </node>
+
+<!-- AMCL parameter -->
+  <node pkg="amcl" type="amcl" name="amcl">
+    <rosparam file="$(find ros_marvelmind_nav)/params/amcl_param.yaml" command="load"/>
+  </node>
+</launch>

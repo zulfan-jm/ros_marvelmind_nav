@@ -1,0 +1,7 @@
+{
+    "python.autoComplete.extraPaths": [
+        "/home/zulfanjm/tugas-akhir/devel/lib/python3/dist-packages",
+        "/home/zulfanjm/ros_beginner/devel/lib/python3/dist-packages",
+        "/opt/ros/noetic/lib/python3/dist-packages"
+    ]
+}
