@@ -14,7 +14,7 @@
   <node pkg="tf" type="static_transform_publisher" name="beacon_map_broadcaster" args="0 0 0 0 0 0 beacon_map map 100" />
 
 <!-- Playing navigation & marvelmind bag files -->
-  <node pkg="rosbag" type="play" name="Navigation" output="screen" args="--clock $(find ros_marvelmind_nav)/bagfiles/nav_sequence.bag"/>
+  <node pkg="rosbag" type="play" name="Navigation" output="screen" args="--clock $(find ros_marvelmind_nav)/bagfiles/nav_success.bag"/>
   <node pkg="rosbag" type="play" name="Marvelmind" output="screen" args="--clock $(find ros_marvelmind_nav)/bagfiles/hedge_marvelmind.bag"/>
 
 <!-- Message adapter for robot_localization -->
@@ -25,15 +25,16 @@
 <!-- EKF localization -->
   <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization_map">
     <rosparam file="$(find ros_marvelmind_nav)/params/robot_localization_map.yaml" command="load"/>
-    <remap from="odometry/filtered" to="odometry/map"/>
+    <!-- <remap from="odometry/filtered" to="odometry/map"/> -->
   </node>
   <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization_odom">
     <rosparam file="$(find ros_marvelmind_nav)/params/robot_localization_odom.yaml" command="load"/>
-    <remap from="odometry/filtered" to="odometry/imu"/>
+    <!-- <remap from="odometry/filtered" to="odometry/imu"/> -->
   </node>
 
 <!-- AMCL parameter -->
   <node pkg="amcl" type="amcl" name="amcl">
     <rosparam file="$(find ros_marvelmind_nav)/params/amcl_param.yaml" command="load"/>
+    <remap from="odom" to="odometry/filtered" />
   </node>
 </launch>
