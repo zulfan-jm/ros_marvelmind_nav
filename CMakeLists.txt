@@ -11,8 +11,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
   std_msgs
-  message_generation
-  genmsg
+  marvelmind_nav
 )
 
 ## System dependencies are found with CMake's conventions
@@ -51,8 +50,6 @@ find_package(catkin REQUIRED COMPONENTS
 ## Generate messages in the 'msg' folder
 add_message_files(
   FILES
-  hedge_pos_ang.msg
-  hedge_imu_fusion.msg
 )
 
 ## Generate services in the 'srv' folder
@@ -107,7 +104,7 @@ generate_messages(
 catkin_package(
  INCLUDE_DIRS include
  LIBRARIES ros_marvelmind_nav
- CATKIN_DEPENDS message_runtime
+ CATKIN_DEPENDS message_runtime marvelmind_nav
 #  CATKIN_DEPENDS roscpp rospy std_msgs
 #  DEPENDS system_lib
 )
